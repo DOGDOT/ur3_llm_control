@@ -1,0 +1,35 @@
+objects:
+  red_cube:
+    x: 0.32
+    y: -0.18
+    z: 0.05
+  yellow_cube:
+    x: 0.36
+    y: 0.0
+    z: 0.05
+  blue_cube:
+    x: 0.32
+    y: 0.18
+    z: 0.05
+
+zones:
+  zone_a:
+    x: -0.15
+    y: 0.35
+    z: 0.05
+  zone_b:
+    x: 0.05
+    y: 0.38
+    z: 0.05
+  zone_c:
+    x: 0.25
+    y: 0.32
+    z: 0.05
+
+home_joint_positions:
+  - 0.0
+  - -1.57
+  - 1.2
+  - -1.2
+  - -1.57
+  - 0.0

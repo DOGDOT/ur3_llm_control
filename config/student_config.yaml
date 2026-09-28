@@ -1,0 +1,6 @@
+student_name: "Pham Thanh Dong"
+student_id: "23020735"  # Thay đúng MSSV thật của bạn
+rule:
+  zone_a: "blue_cube"
+  zone_b: "yellow_cube"
+  zone_c: "red_cube"
