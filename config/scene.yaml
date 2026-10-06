@@ -1,35 +1,57 @@
+motion:
+  home_joints: [0.0, -1.9, 1.0, -1.37, -1.57, 0.0]
+  approach_z: 0.22      # Tầng bay an toàn trên không
+  grasp_z: 0.126         # z của tool0 khi kẹp (ngón kẹp chạm sát đáy khối)
+  place_z: 0.128
+
+gripper:
+  open_pos: 0.045
+  close_pos: 0.018
+  cube_size: 0.04
+  width_tolerance: 0.008
+
 objects:
   red_cube:
-    x: 0.32
-    y: -0.18
-    z: 0.05
+    x: 0.30
+    y: -0.16
+    z: 0.06
   yellow_cube:
-    x: 0.36
-    y: 0.0
-    z: 0.05
+    x: 0.30
+    y: -0.08
+    z: 0.06
   blue_cube:
-    x: 0.32
-    y: 0.18
-    z: 0.05
+    x: 0.30
+    y: 0.0
+    z: 0.06
+  green_cube:
+    x: 0.30
+    y: 0.08
+    z: 0.06
+  purple_cube:
+    x: 0.30
+    y: 0.16
+    z: 0.06
 
 zones:
   zone_a:
-    x: -0.15
-    y: 0.35
-    z: 0.05
+    x: 0.42
+    y: -0.16
+    z: 0.06
   zone_b:
-    x: 0.05
-    y: 0.38
-    z: 0.05
+    x: 0.42
+    y: 0.0
+    z: 0.06
   zone_c:
-    x: 0.25
-    y: 0.32
-    z: 0.05
+    x: 0.42
+    y: 0.16
+    z: 0.06
 
-home_joint_positions:
-  - 0.0
-  - -1.57
-  - 1.2
-  - -1.2
-  - -1.57
-  - 0.0
+staging_positions:
+  temp_pos_1:
+    x: 0.45
+    y: -0.08
+    z: 0.06
+  temp_pos_2:
+    x: 0.45
+    y: 0.08
+    z: 0.06

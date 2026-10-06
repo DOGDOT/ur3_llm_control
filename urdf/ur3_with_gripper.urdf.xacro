@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ur3_with_gripper">
+
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+
+  <link name="world"/>
+
+  <xacro:ur_robot
+    name="ur"
+    tf_prefix=""
+    parent="world"
+    joint_limits_parameters_file="$(find ur_description)/config/ur3/joint_limits.yaml"
+    kinematics_parameters_file="$(find ur_description)/config/ur3/default_kinematics.yaml"
+    physical_parameters_file="$(find ur_description)/config/ur3/physical_parameters.yaml"
+    visual_parameters_file="$(find ur_description)/config/ur3/visual_parameters.yaml"
+    sim_gazebo="true">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:ur_robot>
+
+  <xacro:include filename="$(find ur3_llm_control)/urdf/parallel_gripper.xacro"/>
+
+  <xacro:parallel_gripper 
+    parent="tool0" 
+    sim_gazebo="true" 
+    max_opening="0.045" 
+    initial_opening="0.045" 
+    tcp="0.07"/>
+
+
+  
+  <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+      <parameters>$(find ur3_llm_control)/config/gripper_controller.yaml</parameters>
+      <robot_param>robot_description</robot_param>
+      <robot_param_node>robot_state_publisher</robot_param_node>
+    </plugin>
+  </gazebo>
+
+</robot>

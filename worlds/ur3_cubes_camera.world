@@ -1,0 +1,303 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Plugin xuất các ROS 2 service: /gazebo/set_entity_state, /gazebo/get_entity_state -->
+    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+      <ros>
+        <namespace>/gazebo</namespace>
+      </ros>
+      <update_rate>50.0</update_rate>
+    </plugin>
+
+    <!-- Plugin IFRA_LinkAttacher: Tạo liên kết vật lý (fixed joint) gắp nhả vật thật chuẩn Gazebo -->
+    <plugin name="gazebo_link_attacher" filename="libgazebo_link_attacher.so"/>
+
+    <!-- BÀN THAO TÁC CAO 4cm, GẦM THÔNG THOÁNG -->
+    <model name="work_table">
+      <static>true</static>
+      <pose>0.40 0.0 0.02 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>0.46 0.65 0.04</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.46 0.65 0.04</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- TARGET ZONES (Màu xám trung tính, S=0 để không bị Camera Perception nhận nhầm là cube màu) -->
+    <model name="visual_zone_a">
+      <static>true</static>
+      <pose>0.42 -0.16 0.042 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><cylinder><radius>0.045</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="visual_zone_b">
+      <static>true</static>
+      <pose>0.42 0.0 0.042 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><cylinder><radius>0.045</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="visual_zone_c">
+      <static>true</static>
+      <pose>0.42 0.16 0.042 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><cylinder><radius>0.045</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- VỊ TRÍ ĐỆM TẠM (Màu xám nhạt trung tính) -->
+    <model name="visual_temp_1">
+      <static>true</static>
+      <pose>0.45 -0.08 0.042 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><cylinder><radius>0.04</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>0.55 0.55 0.55 1</ambient><diffuse>0.55 0.55 0.55 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="visual_temp_2">
+      <static>true</static>
+      <pose>0.45 0.08 0.042 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><cylinder><radius>0.04</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>0.55 0.55 0.55 1</ambient><diffuse>0.55 0.55 0.55 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 5 KHỐI CUBE - Cải thiện vật lý để gắp tốt hơn -->
+    <model name="red_cube">
+      <pose>0.30 -0.16 0.06 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia><ixx>1.333e-5</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1.333e-5</iyy><iyz>0</iyz><izz>1.333e-5</izz></inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <surface>
+            <friction>
+              <ode><mu>100.0</mu><mu2>100.0</mu2></ode>
+              <torsional>
+                <coefficient>50.0</coefficient>
+                <use_patch_radius>true</use_patch_radius>
+                <patch_radius>0.01</patch_radius>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>50000.0</kp>
+                <kd>50.0</kd>
+                <max_vel>0.001</max_vel>
+                <min_depth>0.002</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="yellow_cube">
+      <pose>0.30 -0.08 0.06 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia><ixx>1.333e-5</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1.333e-5</iyy><iyz>0</iyz><izz>1.333e-5</izz></inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <surface>
+            <friction>
+              <ode><mu>100.0</mu><mu2>100.0</mu2></ode>
+              <torsional>
+                <coefficient>50.0</coefficient>
+                <use_patch_radius>true</use_patch_radius>
+                <patch_radius>0.01</patch_radius>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>50000.0</kp>
+                <kd>50.0</kd>
+                <max_vel>0.001</max_vel>
+                <min_depth>0.002</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <material><ambient>1 0.9 0 1</ambient><diffuse>1 0.9 0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="blue_cube">
+      <pose>0.30 0.0 0.06 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia><ixx>1.333e-5</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1.333e-5</iyy><iyz>0</iyz><izz>1.333e-5</izz></inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <surface>
+            <friction>
+              <ode><mu>100.0</mu><mu2>100.0</mu2></ode>
+              <torsional>
+                <coefficient>50.0</coefficient>
+                <use_patch_radius>true</use_patch_radius>
+                <patch_radius>0.01</patch_radius>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>50000.0</kp>
+                <kd>50.0</kd>
+                <max_vel>0.001</max_vel>
+                <min_depth>0.002</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <material><ambient>0 0.2 1 1</ambient><diffuse>0 0.2 1 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="green_cube">
+      <pose>0.30 0.08 0.06 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia><ixx>1.333e-5</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1.333e-5</iyy><iyz>0</iyz><izz>1.333e-5</izz></inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <surface>
+            <friction>
+              <ode><mu>100.0</mu><mu2>100.0</mu2></ode>
+              <torsional>
+                <coefficient>50.0</coefficient>
+                <use_patch_radius>true</use_patch_radius>
+                <patch_radius>0.01</patch_radius>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>50000.0</kp>
+                <kd>50.0</kd>
+                <max_vel>0.001</max_vel>
+                <min_depth>0.002</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <material><ambient>0 0.8 0.1 1</ambient><diffuse>0 0.8 0.1 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="purple_cube">
+      <pose>0.30 0.16 0.06 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.05</mass>
+          <inertia><ixx>1.333e-5</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1.333e-5</iyy><iyz>0</iyz><izz>1.333e-5</izz></inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <surface>
+            <friction>
+              <ode><mu>100.0</mu><mu2>100.0</mu2></ode>
+              <torsional>
+                <coefficient>50.0</coefficient>
+                <use_patch_radius>true</use_patch_radius>
+                <patch_radius>0.01</patch_radius>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>50000.0</kp>
+                <kd>50.0</kd>
+                <max_vel>0.001</max_vel>
+                <min_depth>0.002</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.04 0.04 0.04</size></box></geometry>
+          <material><ambient>0.7 0.1 0.8 1</ambient><diffuse>0.7 0.1 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- OVERHEAD CAMERA -->
+    <model name="overhead_camera">
+      <static>true</static>
+      <pose>0.38 0.0 1.20 0 1.5708 0</pose>
+      <link name="camera_link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
+          <material><ambient>0.1 0.1 0.1 1</ambient></material>
+        </visual>
+        <sensor name="camera" type="camera">
+          <always_on>true</always_on>
+          <update_rate>30.0</update_rate>
+          <camera>
+            <horizontal_fov>1.15</horizontal_fov>
+            <image><width>640</width><height>480</height><format>R8G8B8</format></image>
+            <clip><near>0.1</near><far>10.0</far></clip>
+          </camera>
+          <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <ros>
+              <namespace>/</namespace>
+              <remapping>image_raw:=camera/image_raw</remapping>
+              <remapping>camera_info:=camera/camera_info</remapping>
+            </ros>
+            <frame_name>overhead_camera_frame</frame_name>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+
+  </world>
+</sdf>
